@@ -8,16 +8,16 @@ keep_vars = true
 
 [vars]
 # UUID ကို ဒီမှာ မထည့်ထားဘူး (Dashboard မှာ ထည့်ထားမယ်)
-PROXYIP = ["pro.galaxytunnel.linkpc.net";"blacknight.abrdns.com";"privacy.bbroot.com";"galax.cc.cd";"net.galaxytunnel.linkpc.net"]
+PROXYIP = "pro.galaxytunnel.linkpc.net" 
 #PROXY_LIST_URL = "https://galaxytunnel.github.io/PROXYIP.txt"
 DNS_RESOLVER_URL = "https://1.1.1.1.cloudflare-gateway.com/dns-query"
 [vars]
 # Optional. Valid values: direct or proxyip
-DEFAULT_ROUTE = "direct"
+DEFAULT_ROUTE = ""
 
 # Optional hostname route rules.
 # Example: *.google.com=proxyip,*.example.com=direct
-ROUTES = "130.61.227.173"
+ROUTES = ""
 
 # Set the existing worker credentials as secrets:
 #   npx wrangler secret put UUID
