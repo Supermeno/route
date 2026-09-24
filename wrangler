@@ -1,0 +1,38 @@
+# Privacy-first VLESS over WebSocket Worker
+# Deploy with: npx wrangler deploy
+# Change `name` before deploying.
+
+name = "vless-route-worker"
+main = "vless-route-worker.js"
+compatibility_date = "2024-09-23"
+
+# Optional: keep source maps out of the deployed bundle.
+# workers_dev = true
+
+[vars]
+# Do not put UUIDs, proxy credentials, or private endpoints here.
+# Store those with `wrangler secret put` instead.
+DEFAULT_ROUTE = "direct"
+WS_PATH = "/"
+CONNECT_TIMEOUT_MS = "15000"
+IDLE_TIMEOUT_MS = "300000"
+
+# Example route rules. Replace these with domains and routes you are
+# authorized to use. Keep JSON valid and use only:
+# direct, proxyip, socks5, http
+ROUTE_RULES = "[{\"match\":\"speedtest.net\",\"via\":\"direct\"},{\"match\":\"*.speedtest.net\",\"via\":\"direct\"}]"
+
+# Secrets are intentionally omitted. Set them with:
+#   npx wrangler secret put UUID
+#   npx wrangler secret put PROXYIP_POOL
+#   npx wrangler secret put SOCKS5_URL
+#   npx wrangler secret put HTTP_PROXY_URL
+#
+# Examples of secret values:
+#   UUID: one UUIDv4, or comma-separated UUIDv4 values
+#   PROXYIP_POOL: host[:port],host[:port]
+#   SOCKS5_URL: socks5://user:password@host:port
+#   HTTP_PROXY_URL: http://user:password@host:port
+#
+# Only set proxy secrets when the corresponding route is used. Use only
+# endpoints that you own or are explicitly authorized to use.
