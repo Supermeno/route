@@ -42,20 +42,31 @@ const MAX_EARLY_DATA_BYTES = 8 * 1024;
 
 export default {
   async fetch(request, env) {
-    const config = loadConfig(env);
     const url = new URL(request.url);
+
+    // Keep health checks usable even before UUID/proxy secrets are configured.
+    if (url.pathname === "/health") {
+      return new Response(JSON.stringify({ status: "ok" }), {
+        headers: { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" }
+      });
+    }
+
+    let config;
+    try {
+      config = loadConfig(env);
+    } catch (error) {
+      // Do not let a missing secret or malformed route JSON become a Cloudflare 1101.
+      return new Response(`Worker configuration error: ${error.message}`, {
+        status: 500,
+        headers: { "content-type": "text/plain; charset=utf-8", "cache-control": "no-store" }
+      });
+    }
 
     if (request.headers.get("Upgrade")?.toLowerCase() === "websocket") {
       if (url.pathname !== config.wsPath) {
         return new Response("Bad WebSocket path", { status: 404 });
       }
       return handleWebSocket(request, config);
-    }
-
-    if (url.pathname === "/health") {
-      return new Response(JSON.stringify({ status: "ok" }), {
-        headers: { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" }
-      });
     }
 
     // Deliberately do not expose UUIDs, proxy endpoints, route rules, or links.
