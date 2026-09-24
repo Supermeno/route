@@ -94,7 +94,15 @@ function loadConfig(env) {
   let routeRules = [];
   if (env.ROUTE_RULES) {
     try {
-      const parsed = JSON.parse(env.ROUTE_RULES);
+      const rawRules = String(env.ROUTE_RULES).trim();
+      let parsed;
+      try {
+        parsed = JSON.parse(rawRules);
+      } catch (_) {
+        // Cloudflare Dashboard users sometimes paste TOML-style escaped
+        // quotes literally. Accept that harmless representation as well.
+        parsed = JSON.parse(rawRules.replace(/\\"/g, '"'));
+      }
       if (!Array.isArray(parsed)) throw new Error("ROUTE_RULES must be an array");
       routeRules = parsed.map(normalizeRule).filter(Boolean);
     } catch (error) {
