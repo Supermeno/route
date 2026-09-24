@@ -6,7 +6,7 @@ var trojanPassword = "";
 var proxyIP = "pro.galaxytunnel.linkpc.net";
 var routeRules = "";
 var defaultRoute = "direct";
-var dohURL = "https://cloudflare-dns.com/dns-query";
+var dohURL = "https://1.1.1.1.cloudflare-gateway.com/dns-query";
 
 function isValidUUID(uuid) {
     // FIXED: \[ → [ ၊ \] → ] (character class အဖြစ်သုံးရန်)
