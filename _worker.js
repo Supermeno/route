@@ -110,7 +110,7 @@ function loadConfig(env) {
     }
   }
 
-  const defaultRoute = String(env.DEFAULT_ROUTE || "direct").toLowerCase();
+  const defaultRoute = stripOuterQuotes(String(env.DEFAULT_ROUTE || "direct").trim()).toLowerCase();
   if (!["direct", "proxyip", "socks5", "http"].includes(defaultRoute)) {
     throw new Error("DEFAULT_ROUTE must be direct, proxyip, socks5, or http");
   }
@@ -150,8 +150,19 @@ function normalizeRule(rule) {
 }
 
 function normalizePath(path) {
-  const value = String(path || "/").trim();
+  const value = stripOuterQuotes(String(path || "/").trim());
   return value.startsWith("/") ? value : `/${value}`;
+}
+
+function stripOuterQuotes(value) {
+  if (value.length >= 2) {
+    const first = value[0];
+    const last = value[value.length - 1];
+    if ((first === '"' && last === '"') || (first === "'" && last === "'")) {
+      return value.slice(1, -1).trim();
+    }
+  }
+  return value;
 }
 
 function boundedNumber(value, fallback, min, max) {
