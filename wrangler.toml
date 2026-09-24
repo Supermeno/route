@@ -3,7 +3,7 @@
 # Change `name` before deploying.
 
 name = "vless-route-worker"
-main = "vless-route-worker.js"
+main = "_worker.js"
 compatibility_date = "2024-09-23"
 
 # Optional: keep source maps out of the deployed bundle.
