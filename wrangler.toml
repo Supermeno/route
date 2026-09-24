@@ -3,15 +3,8 @@
 # Change `name` before deploying.
 
 name = "vless-route-worker"
-main = "_worker.js"
+main = "vless-route-worker.js"
 compatibility_date = "2024-09-23"
-compatibility_flags = [ "nodejs_compat" ]
-
-keep_vars = true
-
-
-# Optional: keep source maps out of the deployed bundle.
-# workers_dev = true
 
 [vars]
 # Do not put UUIDs, proxy credentials, or private endpoints here.
@@ -21,10 +14,8 @@ WS_PATH = "/"
 CONNECT_TIMEOUT_MS = "15000"
 IDLE_TIMEOUT_MS = "300000"
 
-# Example route rules. Replace these with domains and routes you are
-# authorized to use. Keep JSON valid and use only:
-# direct, proxyip, socks5, http
-ROUTE_RULES = "[{\"match\":\"speedtest.net\",\"via\":\"direct\"},{\"match\":\"*.speedtest.net\",\"via\":\"direct\"}]"
+# TOML literal string: no backslash escaping is needed here.
+ROUTE_RULES = '[{"match":"speedtest.net","via":"direct"},{"match":"*.speedtest.net","via":"direct"}]'
 
 # Secrets are intentionally omitted. Set them with:
 #   npx wrangler secret put UUID
@@ -32,7 +23,7 @@ ROUTE_RULES = "[{\"match\":\"speedtest.net\",\"via\":\"direct\"},{\"match\":\"*.
 #   npx wrangler secret put SOCKS5_URL
 #   npx wrangler secret put HTTP_PROXY_URL
 #
-# Examples of secret values:
+# Examples:
 #   UUID: one UUIDv4, or comma-separated UUIDv4 values
 #   PROXYIP_POOL: host[:port],host[:port]
 #   SOCKS5_URL: socks5://user:password@host:port
