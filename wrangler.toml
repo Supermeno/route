@@ -5,6 +5,10 @@
 name = "vless-route-worker"
 main = "_worker.js"
 compatibility_date = "2024-09-23"
+compatibility_flags = [ "nodejs_compat" ]
+
+keep_vars = true
+
 
 # Optional: keep source maps out of the deployed bundle.
 # workers_dev = true
