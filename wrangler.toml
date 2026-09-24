@@ -1,33 +1,28 @@
-# Privacy-first VLESS over WebSocket Worker
-# Deploy with: npx wrangler deploy
-# Change `name` before deploying.
+name = "vless-original-route-only"
+main =  "-_worker.js"
+compatibility_date = "2024-09-23"
+compatibility_flags = [ "nodejs_compat" ]
 
-name = "vless-route-worker"
-main = "_worker.js"
-compatibility_date = "2024-03-18"
+# ✅ ဒီ line ကို ထည့်ပါ
+keep_vars = true
 
 [vars]
-# Do not put UUIDs, proxy credentials, or private endpoints here.
-# Store those with `wrangler secret put` instead.
+# UUID ကို ဒီမှာ မထည့်ထားဘူး (Dashboard မှာ ထည့်ထားမယ်)
+PROXYIP = ["pro.galaxytunnel.linkpc.net"; "blacknight.abrdns.com"; "privacy.bbroot.com"; "galax.cc.cd"; "net.galaxytunnel.linkpc.net"]
+#PROXY_LIST_URL = "https://galaxytunnel.github.io/PROXYIP.txt"
+DNS_RESOLVER_URL = "https://1.1.1.1.cloudflare-gateway.com/dns-query"
+[vars]
+# Optional. Valid values: direct or proxyip
 DEFAULT_ROUTE = "direct"
-WS_PATH = "/"
-CONNECT_TIMEOUT_MS = "15000"
-IDLE_TIMEOUT_MS = "300000"
-PROXYIP = "blacknight.abrdns.com"
-# TOML literal string: no backslash escaping is needed here.
-ROUTE_RULES = '[{"match":"speedtest.net","via":"direct"},{"match":"*.speedtest.net","via":"direct"}]'
 
-# Secrets are intentionally omitted. Set them with:
+# Optional hostname route rules.
+# Example: *.google.com=proxyip,*.example.com=direct
+ROUTES = "pro.galaxytunnel.linkpc.net"
+
+# Set the existing worker credentials as secrets:
 #   npx wrangler secret put UUID
-#   npx wrangler secret put PROXYIP_POOL
-#   npx wrangler secret put SOCKS5_URL
-#   npx wrangler secret put HTTP_PROXY_URL
 #
-# Examples:
-#   UUID: one UUIDv4, or comma-separated UUIDv4 values
-#   PROXYIP_POOL: host[:port],host[:port]
-#   SOCKS5_URL: socks5://user:password@host:port
-#   HTTP_PROXY_URL: http://user:password@host:port
-#
-# Only set proxy secrets when the corresponding route is used. Use only
-# endpoints that you own or are explicitly authorized to use.
+# Optional runtime values can also be set as secrets/vars:
+#   npx wrangler secret put PROXYIP
+#   npx wrangler secret put TROJAN_PASS
+#   npx wrangler secret put DNS_RESOLVER_URL
